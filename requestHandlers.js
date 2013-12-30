@@ -1,29 +1,7 @@
-function startFTP() {
-    
+function handleFTP(action) {
     var FTP_COMMAND = 'vsftpd';
-
-    startService(FTP_COMMAND);
-    console.log("FTP Server started");
-}
-
-function stopFTP() {
-
-    var FTP_COMMAND = 'vsftpd';
-
-    stopService(FTP_COMMAND);
-    console.log("FTP Server stopped");
-}
-
-function startTorrents() {
     
-    handleTorrents('start');
-    console.log("Torrents Server started");
-}
-
-function stopTorrents() {
-
-    handleTorrents('stop');
-    console.log("Torrents Server stopped");
+    handleService(FTP_COMMAND, action);
 }
 
 function handleTorrents(action)
@@ -47,16 +25,6 @@ function handleTorrents(action)
     });
 }
 
-function startService(command_name)
-{
-    handleService(command_name, 'start');
-}
-
-function stopService(command_name)
-{
-    handleService(command_name, 'stop');
-}
-
 function handleService(command_name, action)
 {
     var SERVICE_CMD = 'service';
@@ -78,7 +46,5 @@ function handleService(command_name, action)
     });
 }
 
-exports.startFTP = startFTP;
-exports.stopFTP = stopFTP;
-exports.startTorrents = startTorrents;
-exports.stopTorrents = stopTorrents;
+exports.handleFTP = handleFTP;
+exports.handleTorrents = handleTorrents;

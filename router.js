@@ -1,14 +1,13 @@
-function route(handle, pathname) {
-    //console.log("A punto de rutear una peticion para " + pathname);
-    if (typeof handle[pathname] === 'function') 
-    {
-        return handle[pathname]();
-    } 
+function route(handle, pathname) 
+{
+    var path_items = pathname.split('/');
+    var service = path_items[path_items.length-2];
+    var action = path_items[path_items.length-1];
+
+    if (typeof handle[service] === 'function')
+        return handle[service](action);
     else 
-    {
-        //console.log("No se encontro manipulador para " + pathname);
         return "404 Not Found, baby";
-    }
 }
 
 exports.route = route;
