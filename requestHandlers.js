@@ -33,7 +33,8 @@ function handleSize(action, response) {
 
     child = exec(command,
       function (error, stdout, stderr) {
-        result = stdout.replace('\n','');
+        result = stdout.replace('%','');
+        result = result.replace('\n','');
         if (error !== null) {
           console.log('exec error: ' + error);
         }
