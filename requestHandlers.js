@@ -1,10 +1,51 @@
-function handleFTP(action) {
+function defaultResponse(response)
+{
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write("NodeJS API Home page");
+    response.end();
+}
+
+function handleFTP(action, response) {
     var FTP_COMMAND = 'vsftpd';
     
     handleService(FTP_COMMAND, action);
+    defaultResponse(response);
 }
 
-function handleTorrents(action)
+function handleSize(action, response) {
+
+    // Constants
+    var DISK_PATH = '/mnt/pendrive';
+    var PIPE = ' | ';
+
+    var actions = Array();
+    actions['free'] = '$4';
+    actions['used'] = '$5';
+
+    var df = 'df -h ' + DISK_PATH;
+    var grep = 'grep dev';
+    var awk = ' awk \'{print(' + actions[action] + ')}\'';
+
+    var exec = require('child_process').exec,
+    child;
+
+    var command = df + PIPE + grep + PIPE + awk;
+
+    child = exec(command,
+      function (error, stdout, stderr) {
+        result = stdout.replace('\n','');
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+
+        response.writeHead(200, {"Content-Type": "application/json"});
+        var json = JSON.stringify({ value: result });
+        response.end(json, null, 3);
+    });
+
+}
+
+function handleTorrents(action, response)
 {
     var transmision_bin = '/etc/init.d/transmission-daemon';
     var spawn       = require('child_process').spawn;
@@ -23,6 +64,7 @@ function handleTorrents(action)
             console.log('grep_cmd process exited with code ' + code);
         }
     });
+    defaultResponse(response);
 }
 
 function handleService(command_name, action)
@@ -48,3 +90,4 @@ function handleService(command_name, action)
 
 exports.handleFTP = handleFTP;
 exports.handleTorrents = handleTorrents;
+exports.handleSize = handleSize;

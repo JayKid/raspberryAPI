@@ -5,11 +5,8 @@ function iniciar(route, handle) {
   function onRequest(request, response) {
     var pathname = url.parse(request.url).pathname;
 
-    route(handle, pathname);
+    route(handle, pathname, response);
 
-    response.writeHead(200, {"Content-Type": "text/html"});
-    response.write("NodeJS API Home page");
-    response.end();
   }
 
   http.createServer(onRequest).listen(8080);
