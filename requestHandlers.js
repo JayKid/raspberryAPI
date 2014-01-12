@@ -1,5 +1,6 @@
 function defaultResponse(response)
 {
+    response.setHeader('Access-Control-Allow-Origin', 'http://192.168.0.13');
     response.writeHead(200, {"Content-Type": "text/html"});
     response.write("NodeJS API Home page");
     response.end();
@@ -39,6 +40,7 @@ function handleSize(action, response) {
           console.log('exec error: ' + error);
         }
 
+        response.setHeader('Access-Control-Allow-Origin', 'http://192.168.0.13');
         response.writeHead(200, {"Content-Type": "application/json"});
         var json = JSON.stringify({ value: result });
         response.end(json, null, 3);
